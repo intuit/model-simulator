@@ -1,4 +1,6 @@
-# model-sim
+![model-simulator logo](.github/assets/images/model-simulator-logo.png)
+
+# model-simulator
 
 TODO: (Badges for Build Status, Test Coverage, Version go here...)
 

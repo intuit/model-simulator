@@ -3,6 +3,7 @@
 # model-simulator
 
 TODO: (Badges for Build Status, Test Coverage, Version go here...)
+[![CircleCI](https://circleci.com/gh/intuit/model-simulator/tree/main.svg?style=svg)](https://circleci.com/gh/intuit/model-simulator/tree/main)
 
 The main purpose of `model-sim` is to serve as a placeholder model to enable testing other tools and
 workflows. It is a Docker image that can be run locally and on AWS SageMaker. It simulates varying

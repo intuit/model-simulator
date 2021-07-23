@@ -4,9 +4,9 @@
 
 [![CircleCI](https://circleci.com/gh/intuit/model-simulator/tree/main.svg?style=svg)](https://circleci.com/gh/intuit/model-simulator/tree/main)
 
-The main purpose of `model-sim` is to serve as a placeholder model to enable testing other tools and
-workflows. It is a Docker image that can be run locally and on AWS SageMaker. It simulates varying
-response times, returning error codes, reading artifacts, logging messages, and other model
+The main purpose of `model-simulator` is to serve as a placeholder model to enable testing other
+tools and workflows. It is a Docker image that can be run locally and on AWS SageMaker. It simulates
+varying response times, returning error codes, reading artifacts, logging messages, and other model
 behaviors.
 
 This repo started with the
@@ -21,8 +21,8 @@ example, but has modified `predictor.py` to handle requests as specified below.
 
 Clone the repo:
 ```sh
-git clone https://github.intuit.com/data-mlplatform/model-sim-public.git # TODO: replace with public location
-cd model-sim
+git clone https://github.com/intuit/model-simulator.git
+cd model-simulator
 ```
 
 Ensure the `serve` file is executable:
@@ -32,12 +32,12 @@ chmod +x model/serve
 
 Build docker image:
 ```sh
-docker build -t model-sim .
+docker build -t model-simulator .
 ```
 
 ### Test Locally
 ```sh
-docker run -v $(pwd)/data:/opt/ml/model -p 8080:8080 --rm model-sim:latest serve
+docker run -v $(pwd)/data:/opt/ml/model -p 8080:8080 --rm model-simulator:latest serve
 ```
 - The data folder is mounted at `/opt/ml/model` to match where SageMaker will later be mounting the
   `model.tar.gz` file below.
@@ -120,19 +120,19 @@ tar -zcvf model.tar.gz *
 
 - Upload the model.tar.gz file to some S3 location. For example:
 ```sh
-aws s3 cp model.tar.gz s3://your-bucket-name-here/model-sim/1-0/model.tar.gz
+aws s3 cp model.tar.gz s3://your-bucket-name-here/model-simulator/1-0/model.tar.gz
 ```
 
 ### Publish Docker image to ECR
 
 - AWS Console > Elastic Container Registry > Repositories > Create Repository
-- Repository name: `111111111111.dkr.ecr.us-west-2.amazonaws.com/model-sim`
+- Repository name: `111111111111.dkr.ecr.us-west-2.amazonaws.com/model-simulator`
 - Push to repository:
 ```sh
 aws ecr get-login
 docker login -u AWS -p ... https://111111111111.dkr.ecr.us-west-2.amazonaws.com
-docker tag model-sim:latest 111111111111.dkr.ecr.us-west-2.amazonaws.com/model-sim:latest
-docker push 111111111111.dkr.ecr.us-west-2.amazonaws.com/model-sim:latest
+docker tag model-simulator:latest 111111111111.dkr.ecr.us-west-2.amazonaws.com/model-simulator:latest
+docker push 111111111111.dkr.ecr.us-west-2.amazonaws.com/model-simulator:latest
 ```
 
 ### Set up SageMaker Endpoint
@@ -140,22 +140,22 @@ docker push 111111111111.dkr.ecr.us-west-2.amazonaws.com/model-sim:latest
 #### Create model
 
 - AWS Console > Amazon SageMaker > Inference > Models
-- Model name: `model-sim`
+- Model name: `model-simulator`
 - IAM role: new role
-- Location of inference code image: `111111111111.dkr.ecr.us-west-2.amazonaws.com/model-sim:latest`
-- Location of model artifacts: `s3://your-bucket-name-here/model-sim/1-0/model.tar.gz`
+- Location of inference code image: `111111111111.dkr.ecr.us-west-2.amazonaws.com/model-simulator:latest`
+- Location of model artifacts: `s3://your-bucket-name-here/model-simulator/1-0/model.tar.gz`
 
 #### Create endpoint config
 
 - AWS Console > Amazon SageMaker > Inference > Endpoint configurations
-- Endpoint configuration name: `LEARNING-model-sim-1-0`
-- Production variants: add `model-sim` model created above
+- Endpoint configuration name: `LEARNING-model-simulator-1-0`
+- Production variants: add `model-simulator` model created above
 - Set instance type: `ml.t2.medium` (for testing)
 
 #### Create endpoint
 
 - AWS Console > Amazon SageMaker > Inference > Endpoints
-- Endpoint name: `LEARNING-model-sim-1`
+- Endpoint name: `LEARNING-model-simulator-1`
 - Endpoint configuration: the one created above
 - Endpoint will be in `Creating` status. Wait a few minutes until endpoint reaches `InService`
   status.
@@ -164,7 +164,7 @@ docker push 111111111111.dkr.ecr.us-west-2.amazonaws.com/model-sim:latest
 
 One option for sending a request to the SageMaker endpoint is using the AWS CLI:
 ```
-aws sagemaker-runtime invoke-endpoint --endpoint-name LEARNING-model-sim-1 --body '{"data":"hello"}' outfile.txt
+aws sagemaker-runtime invoke-endpoint --endpoint-name LEARNING-model-simulator-1 --body '{"data":"hello"}' outfile.txt
 ```
 
 The output from the command looks like:
@@ -190,25 +190,24 @@ and the content of the `outfile.txt` looks like:
 ```
 
 Another option is to make an HTTP request directly to the endpoint:
-https://runtime.sagemaker.us-west-2.amazonaws.com/endpoints/LEARNING-model-sim-1/invocations
+https://runtime.sagemaker.us-west-2.amazonaws.com/endpoints/LEARNING-model-simulator-1/invocations
 but this requires setting certain headers.
 
 For more details, see:
 - [SageMaker InvokeEndpoint API](https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_runtime_InvokeEndpoint.html)
 - [AWS Signature Version 4](https://docs.aws.amazon.com/general/latest/gr/signature-v4-examples.html)
-- [Example call including headers](https://github.intuit.com/data-mlplatform/sagemaker-gatling/blob/master/src/test/scala/SageMaker.scala#L84)
+- [Example call including headers](https://github.com/intuit/sagemaker-gatling/blob/main/src/test/scala/SageMaker.scala#L84)
 
 For load testing the endpoint using Gatling to make HTTP requests, see:
-- [sagemaker-gatling](https://github.intuit.com/data-mlplatform/sagemaker-gatling)
+- [sagemaker-gatling](https://github.com/intuit/sagemaker-gatling)
 
-# Development
-
-TODO:
-- Update Jenkinsfile to post to Docker Hub
 
 # Contributing
 
-Feel free to open an [issue](TODO) or [pull request](TODO)!
+Feel free to open an
+[issue](https://github.com/intuit/model-simulator/issues)
+or
+[pull request](https://github.com/intuit/model-simulator/pulls)!
 
 Make sure to read our [code of conduct](CODE_OF_CONDUCT.md).
 

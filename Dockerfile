@@ -2,10 +2,7 @@
 # This is a Python 3 image that uses the nginx, gunicorn, flask stack
 # for serving inferences in a stable way.
 
-FROM docker.intuit.com/docker-rmt/ubuntu:18.04
-
-MAINTAINER Amazon AI <sage-learner@amazon.com>
-
+FROM ubuntu:18.04
 
 RUN apt-get -y update && apt-get install -y --no-install-recommends \
          wget \

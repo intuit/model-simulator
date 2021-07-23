@@ -1,0 +1,11 @@
+version: 2
+jobs:
+  build:
+    machine: true
+    steps:
+      - checkout
+      - run: |
+          TAG=0.1.$CIRCLE_BUILD_NUM
+          docker build -t richardshiao/model-simulator:$TAG .
+          echo $DOCKER_PASS | docker login -u richardshiao --password-stdin
+          docker push richardshiao/model-simulator:$TAG

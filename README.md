@@ -203,7 +203,7 @@ For load testing the endpoint using Gatling to make HTTP requests, see:
 
 # Release
 
-Pick a new version number `v.#.#.#`.
+Pick a new version number `v#.#.#`.
 
 Update the version number in [predictor.py](model/predictor.py).  TODO: Move value to external file.
 

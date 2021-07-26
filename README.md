@@ -201,6 +201,7 @@ For more details, see:
 For load testing the endpoint using Gatling to make HTTP requests, see:
 - [sagemaker-gatling](https://github.com/intuit/sagemaker-gatling)
 
+
 # Release
 
 Pick a new version number `v#.#.#`.
@@ -210,7 +211,9 @@ Update the version number in [predictor.py](model/predictor.py).  TODO: Move val
 Create a new GitHub Release with the same tag version.
 
 GitHub Action [docker-build-push.yml](.github/workflows/docker-build-push.yml)
-will then build the Docker image and push it to specified registries.
+will then build the Docker image and push it to the GitHub Packages Docker repository.  TODO: In the
+future, will also deploy to Docker Hub.
+
 
 # Contributing
 
@@ -225,6 +228,7 @@ Make sure to read our [code of conduct](CODE_OF_CONDUCT.md).
 # License
 
 This project is licensed under the terms of the [Apache License 2.0](LICENSE).
+
 
 # References
 - [Use Your Own Inference Code with Hosting Services](https://docs.aws.amazon.com/sagemaker/latest/dg/your-algorithms-inference-code.html):

@@ -2,7 +2,7 @@
 
 # model-simulator
 
-![Publish Docker image](https://github.com/intuit/model-simulator/actions/workflows/docker-build-push.yml/badge.svg)
+[![Publish Docker image](https://github.com/intuit/model-simulator/actions/workflows/docker-build-push.yml/badge.svg)](https://github.com/intuit/model-simulator/actions/workflows/docker-build-push.yml)
 
 The main purpose of `model-simulator` is to serve as a placeholder model to enable testing other
 tools and workflows. It is a Docker image that can be run locally and on AWS SageMaker. It simulates

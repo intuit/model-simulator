@@ -45,7 +45,7 @@ def invocations():
     file_path = ""
     file_contents = ""
     message = []
-    version = "v1.3b"
+    version = "v1.4.0"
     response_dict = {
         KEY_SLEEP_SECONDS : sleep_seconds,
         KEY_STATUS : status,

@@ -2,7 +2,7 @@
 
 # model-simulator
 
-[![CircleCI](https://circleci.com/gh/intuit/model-simulator/tree/main.svg?style=svg)](https://circleci.com/gh/intuit/model-simulator/tree/main)
+![Publish Docker image](https://github.com/intuit/model-simulator/actions/workflows/docker-build-push.yml/badge.svg)
 
 The main purpose of `model-simulator` is to serve as a placeholder model to enable testing other
 tools and workflows. It is a Docker image that can be run locally and on AWS SageMaker. It simulates
@@ -201,6 +201,16 @@ For more details, see:
 For load testing the endpoint using Gatling to make HTTP requests, see:
 - [sagemaker-gatling](https://github.com/intuit/sagemaker-gatling)
 
+# Release
+
+Pick a new version number `v.#.#.#`.
+
+Update the version number in [predictor.py](model/predictor.py).  TODO: Move value to external file.
+
+Create a new GitHub Release with the same tag version.
+
+GitHub Action [docker-build-push.yml](.github/workflows/docker-build-push.yml)
+will then build the Docker image and push it to specified registries.
 
 # Contributing
 

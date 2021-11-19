@@ -129,8 +129,7 @@ aws s3 cp model.tar.gz s3://your-bucket-name-here/model-simulator/1-0/model.tar.
 - Repository name: `111111111111.dkr.ecr.us-west-2.amazonaws.com/model-simulator`
 - Push to repository:
 ```sh
-aws ecr get-login
-docker login -u AWS -p ... https://111111111111.dkr.ecr.us-west-2.amazonaws.com
+aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 111111111111.dkr.ecr.us-west-2.amazonaws.com
 docker tag model-simulator:latest 111111111111.dkr.ecr.us-west-2.amazonaws.com/model-simulator:latest
 docker push 111111111111.dkr.ecr.us-west-2.amazonaws.com/model-simulator:latest
 ```
@@ -164,7 +163,16 @@ docker push 111111111111.dkr.ecr.us-west-2.amazonaws.com/model-simulator:latest
 
 One option for sending a request to the SageMaker endpoint is using the AWS CLI:
 ```
-aws sagemaker-runtime invoke-endpoint --endpoint-name LEARNING-model-simulator-1 --body '{"data":"hello"}' outfile.txt
+aws sagemaker-runtime invoke-endpoint --endpoint-name LEARNING-model-simulator-1 --body eyJkYXRhIjoiaGVsbG8ifQ== outfile.txt
+```
+where the value for `--body` is the base64 encoding of your request body. In this example, for the
+plain text value:
+```
+{"data":"hello"}
+```
+use its base64 encoding:
+```
+eyJkYXRhIjoiaGVsbG8ifQ==
 ```
 
 The output from the command looks like:
